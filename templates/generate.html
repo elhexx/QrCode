@@ -14,6 +14,11 @@
             padding-top: 3.5rem;
         }
 
+        .img .download{
+            margin-left: 120px;
+            
+        }
+
         .sidebar {
             margin-top: 10px;
         }
@@ -43,13 +48,11 @@
                 </ul>
 
                 
-
-                
             </nav>
 
             <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
-                <h1>Delete</h1>
-                <form class="" action="/del" method="post">
+                <h1>Generate</h1>
+                <form class="" action="/generate" method="post">
                     <div class="row">
                         <div class="col-lg-3">
                             <input type="text" class="form-control" name="fname" placeholder="First name">
@@ -58,49 +61,23 @@
                             <input type="text" class="form-control" name="lname" placeholder="Last name">
                         </div>
                         <div class="col-lg-3">
-                            <input class="btn btn-primary btn btn-danger" type="submit" value="DELETE">
+                            <input class="btn btn-primary " type="submit" value="Generate">
                         </div>
+
+
+
                     </div>
                 </form>
+                <p>{{msg}}</p>
                 <h2>Section title</h2>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>fname</th>
-                                <th>lname</th>
-                                <th>CH</th>
-                                <th>Date</th>
-
-                            </tr>
-                        </thead>
-
-
-                        <tbody>
-
-                            <tr>
-                                {% for d in data %}
-                                <td>{{d['id']}}</td>
-                                <td>{{d['fname']}}</td>
-                                <td>{{d['lname']}}</td>
-                                <td>{{d['CH']}}</td>
-                                <td>lorm2</td>
-                                <td>
-                                    <form class="" action="/del" method="post">
-                                        <input type="hidden" name="fname" value="{{d['fname']}}">
-                                        <input type="hidden" name="lname" value="{{d['lname']}}">
-                                        <input type="submit" name="del" value="DEL" class="btn btn-danger">
-                                    </form>
-                                </td>
-
-                            </tr>
-                            {% endfor %}
-
-
-
-                        </tbody>
-                    </table>
+                    <div class= 'img'>
+                    {% if src != '' %}
+                        <img src="{{ url_for('static', filename='img/'+src) }}"> <br>
+                        <a download="{{src}}" href="{{ url_for('static', filename='img/'+src) }}" >
+                            <button class="btn btn-primary download" id="download">Download</button>
+                        </a>
+                    {% endif %}
+                    </div>
                 </div>
             </main>
         </div>

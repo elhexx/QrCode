@@ -17,11 +17,4 @@ class RegistrationForm(Form):
 
 
 
-class AddNewProductForm(Form):
-    name = StringField('name', [InputRequired()])
-    price = StringField('price', [InputRequired()])
-    stock = StringField('stock', [InputRequired ()])
-    description = TextAreaField('description', [InputRequired()])
-    category = StringField('category', [InputRequired()])
-    pictures = StringField('pictures', [InputRequired()])
-    specifications = StringField('specifications', [InputRequired(message="Completeaza ba specificatiile")])
+

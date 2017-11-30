@@ -1,4 +1,6 @@
 from main import db
+import pyqrcode
+import os
 
 class Students(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -52,7 +54,20 @@ def update_user(fname, lname):
     db.session.add(user)
     db.session.commit()
 
+def reset_user(fname, lname):
+    user = Students.query.filter_by(fname = fname, lname = lname).first()
+    user.CH = 0
+    db.session.add(user)
+    db.session.commit()
+
 def delete_user(fname, lname):
     user = Students.query.filter_by(fname=fname, lname=lname).first()
     db.session.delete(user)
     db.session.commit()
+
+
+def generate_qr(fname, lname):
+     
+    qr = pyqrcode.create(fname+' '+lname)
+    qr.png('static/img/'+fname+'.png', scale=10)
+    
