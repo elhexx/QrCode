@@ -1,3 +1,3 @@
 DEBUG = True
-SQLALCHEMY_DATABASE_URI = 'mysql://root:toor@localhost/test'
+SQLALCHEMY_DATABASE_URI = 'mysql://root:toor@localhost/qrcode'
 SECRET_KEY = "hello"

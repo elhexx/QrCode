@@ -1,0 +1,163 @@
+{% extends 'layout.html' %}
+{% block head %}
+<head>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
+</head>
+{% endblock %}
+{% block body %}
+
+<body>
+  <script src="{{ url_for('static', filename='Chart.min.js') }}"></script>
+    <style media="screen">
+        body {
+            padding-top: 3.5rem;
+        }
+
+        .img .download{
+            margin-left: 120px;
+
+        }
+
+        .sidebar {
+            margin-top: 10px;
+        }
+    </style>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-sm-3 col-md-2 d-none d-sm-block bg-light sidebar">
+                <ul class="nav nav-pills flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard">Dashboard <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/add">Add</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/upd">Upd</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="del">Del</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reset">Reset</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/generate">Generate</a>
+                    </li>
+                </ul>
+
+
+            </nav>
+
+            <main class="col-sm-9 ml-sm-auto col-md-10 pt-3" role="main">
+                <h1>Generate</h1>
+
+                <p>{{msg}}</p>
+                <h2>Section title</h2>
+                    <h1>Flask Chart.js</h1><!-- bar chart canvas element -->
+                    <canvas id="chart" width="600" height="400"></canvas>
+                    <script>
+                       // bar chart data
+                       var barData = {
+                       labels : [{% for item in labels %}
+                                      "{{item}}",
+                                  {% endfor %}],
+                       datasets : [
+                          {
+                                fillColor: "rgba(151,187,205,0.2)",
+                                strokeColor: "rgba(151,187,205,1)",
+                                pointColor: "rgba(151,187,205,1)",
+                             data : [{% for item in values %}
+                                          {{item}},
+                                        {% endfor %}]
+                          }
+                          ]
+                       }
+
+                       // get bar chart canvas
+                       var mychart = document.getElementById("chart").getContext("2d");
+
+                       steps = 10
+                       max = 100
+                       // draw bar chart
+                       new Chart(mychart).Bar(barData, {
+                            scaleOverride: true,
+                            scaleSteps: steps,
+                            scaleStepWidth: Math.ceil(max / steps),
+                            scaleStartValue: 0,
+                            scaleShowVerticalLines: true,
+                            scaleShowGridLines : true,
+                            barShowStroke : true,
+                            scaleShowLabels: true
+                       });
+
+                    </script>
+
+
+                    <canvas id="chart1" width="600" height="400"></canvas>
+
+<script>
+
+   // bar chart data
+   var barData = {
+   labels : [{% for item in labels %}
+                  "{{item}}",
+              {% endfor %}],
+   datasets : [
+      {
+            fillColor: "rgba(151,187,205,0.2)",
+            strokeColor: "rgba(151,187,205,1)",
+            pointColor: "rgba(151,187,205,1)",
+            pointStrokeColor: "#fff",
+            pointHighlightFill: "#fff",
+            pointHighlightStroke: "rgba(151,187,205,1)",
+            bezierCurve : false,
+            data : [{% for item in values %}
+                      {{item}},
+                    {% endfor %}]
+      }]
+   }
+
+    Chart.defaults.global.animationSteps = 50;
+    Chart.defaults.global.tooltipYPadding = 16;
+    Chart.defaults.global.tooltipCornerRadius = 0;
+    Chart.defaults.global.tooltipTitleFontStyle = "normal";
+    Chart.defaults.global.tooltipFillColor = "rgba(0,0,0,0.8)";
+    Chart.defaults.global.animationEasing = "easeOutBounce";
+    Chart.defaults.global.responsive = false;
+    Chart.defaults.global.scaleLineColor = "black";
+    Chart.defaults.global.scaleFontSize = 16;
+
+   // get bar chart canvas
+   var mychart = document.getElementById("chart1").getContext("2d");
+
+   steps = 10
+   max = 100
+   // draw bar chart
+   var LineChartDemo = new Chart(mychart).Line(barData, {
+        scaleOverride: true,
+        scaleSteps: steps,
+        scaleStepWidth: Math.ceil(max / steps),
+        scaleStartValue: 0,
+        scaleShowVerticalLines: true,
+        scaleShowGridLines : true,
+        barShowStroke : true,
+        scaleShowLabels: true,
+        bezierCurve: false,
+
+   });
+
+
+</script>
+
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+</body>
+{% endblock %}

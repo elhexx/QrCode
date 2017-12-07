@@ -1,16 +1,20 @@
 from main import db
 import pyqrcode
-import os
+from datetime import datetime
 
 class Students(db.Model):
+    __tablename__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(50))
     lname = db.Column(db.String(50))
     CH = db.Column(db.Integer, default = 0)
+    time = db.Column(db.DateTime)
+
 
     def __init__(self, fname, lname):
         self.fname = fname
         self.lname = lname
+        self.time = ''
 
     def __repr__(self):
         return '<User %r>' % self.id
@@ -49,25 +53,34 @@ def getUsers():
     return users
 
 def update_user(fname, lname):
+    db.create_all()
     user = Students.query.filter_by(fname = fname, lname = lname).first()
-    user.CH = 1
-    db.session.add(user)
-    db.session.commit()
+    if user:
+        if user.CH:
+            return "already exist"
+        user.CH = 1
+        user.time = str(datetime.utcnow()).split('.')[0]
+        db.session.add(user)
+        db.session.commit()
+        return "done"
+    return "user does not exist"
 
 def reset_user(fname, lname):
+    db.create_all()
     user = Students.query.filter_by(fname = fname, lname = lname).first()
     user.CH = 0
+    user.time = ''
     db.session.add(user)
     db.session.commit()
 
 def delete_user(fname, lname):
+    db.create_all()
     user = Students.query.filter_by(fname=fname, lname=lname).first()
     db.session.delete(user)
     db.session.commit()
 
 
-def generate_qr(fname, lname):
-     
+def generate_qr(fname, lname): 
     qr = pyqrcode.create(fname+' '+lname)
-    qr.png('static/img/'+fname+'.png', scale=10)
+    qr.png('static/img/'+fname+'.png', scale=7)
     

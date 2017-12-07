@@ -3,12 +3,6 @@ from wtforms import Form, BooleanField, TextField, PasswordField, validators, St
 from passlib.hash import sha256_crypt
 import gc
 from functools import wraps
-
-'''
-from createData import createData
-from flask_mysqldb import  MySQL
-from MySQLdb import escape_string as thwart
-from database import Database'''
 from functools import wraps
 
 from main import app
@@ -59,11 +53,14 @@ def upd():
     if request.method == 'POST':
         fname = request.form['fname']
         lname = request.form['lname']
-        try:
-            update_user(fname, lname)
-            return "Done"
-        except Exception as e:
-            return e.message
+        if fname and lname:
+            try:
+	            msg = update_user(fname, lname)
+	            return msg
+            except Exception as e:
+                return e.message
+        else:
+            return "not valid"
     if request.method == 'GET':
         jsonObject = getUsers()
         return render_template('upd.html', data=jsonObject)
@@ -116,9 +113,7 @@ def generate():
     	if fname and lname:
 			generate_qr(fname, lname)
 			return render_template('generate.html', src = fname+'.png')
-
-	else:
-		return render_template('generate.html', src='')
+	return render_template('generate.html', src='')
 
 
 
@@ -175,3 +170,11 @@ def logout():
     session.clear()
     flash('you are logged out', 'success')
     return redirect(url_for('login'))
+
+
+
+@app.route("/chart")
+def chart():
+    labels = ["January","February","March","April","May","June","July","August"]
+    values = [100,90,80,70,60,40,70,80]
+    return render_template('chart.html', values=values, labels=labels)
